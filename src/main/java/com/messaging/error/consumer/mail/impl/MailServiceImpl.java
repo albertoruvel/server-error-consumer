@@ -19,7 +19,7 @@ import java.io.StringWriter;
 @Component
 public class MailServiceImpl implements MailService {
 
-    private final String mailUsername = System.getProperty("mail.config.username");
+    private final String emailRecipients = System.getProperty("mail.config.recipients");
 
     @Autowired
     private JavaMailSender javaMailSender;
@@ -34,7 +34,13 @@ public class MailServiceImpl implements MailService {
     public void sendErrorEmail(ErrorMessage errorMessage) throws Exception{
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setFrom("server-error-consumer");
-        simpleMailMessage.setTo(mailUsername);
+
+        //split recipients property
+        String[] recipients = emailRecipients.split(",");
+        if(recipients.length == 0){
+            throw new IllegalArgumentException("No email recipients to send error email");
+        }
+        simpleMailMessage.setTo(recipients);
         simpleMailMessage.setSubject(String.format("%s error", errorMessage.getApplicationId()));
 
         log.info("Will send email template: " + TEMPLATE_PATH);
