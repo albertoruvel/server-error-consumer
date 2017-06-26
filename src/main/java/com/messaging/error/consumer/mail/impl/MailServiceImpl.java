@@ -2,6 +2,7 @@ package com.messaging.error.consumer.mail.impl;
 
 import com.messaging.error.consumer.data.ErrorMessage;
 import com.messaging.error.consumer.mail.MailService;
+import org.apache.log4j.Logger;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -24,6 +25,7 @@ public class MailServiceImpl implements MailService {
     private JavaMailSender javaMailSender;
 
     private static final String TEMPLATE_PATH = "/templates/error-message-template.vm";
+    private final Logger log = Logger.getLogger(getClass());
 
     @Autowired
     @Qualifier("velocityEngine")
@@ -35,6 +37,7 @@ public class MailServiceImpl implements MailService {
         simpleMailMessage.setTo(mailUsername);
         simpleMailMessage.setSubject(String.format("%s error", errorMessage.getApplicationId()));
 
+        log.info("Will send email template: " + TEMPLATE_PATH);
         Template template = velocityEngine.getTemplate(TEMPLATE_PATH);
 
         VelocityContext context = new VelocityContext();
