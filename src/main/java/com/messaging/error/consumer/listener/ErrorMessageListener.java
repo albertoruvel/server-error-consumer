@@ -2,7 +2,7 @@ package com.messaging.error.consumer.listener;
 
 import com.amazon.sqs.javamessaging.message.SQSTextMessage;
 import com.google.gson.Gson;
-import com.messaging.error.consumer.data.ErrorMessage;
+import com.messaging.email.consumer.data.ErrorMessage;
 import com.messaging.error.consumer.mail.MailService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
